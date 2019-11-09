@@ -45,11 +45,11 @@ function yyy_0q(date: Date): string {
    * season4 01/01 ~ 03/31 24:00
    */
   const isSeason1 =
-    new Date(`${fullYear}/04/01`) < date && date < new Date(`${fullYear}/06/30 24:00`);
+    new Date(`${fullYear}/04/01`) <= date && date < new Date(`${fullYear}/06/30 24:00`);
   const isSeason2 =
-    new Date(`${fullYear}/07/01`) < date && date < new Date(`${fullYear}/09/30 24:00`);
+    new Date(`${fullYear}/07/01`) <= date && date < new Date(`${fullYear}/09/30 24:00`);
   const isSeason3 =
-    new Date(`${fullYear}/10/01`) < date && date < new Date(`${fullYear}/12/31 24:00`);
+    new Date(`${fullYear}/10/01`) <= date && date < new Date(`${fullYear}/12/31 24:00`);
   if (isSeason1) {
     return `${year}_01`;
   } else if (isSeason2) {
