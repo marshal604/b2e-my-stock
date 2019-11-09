@@ -1,0 +1,10 @@
+Each Crawlers Activity Diagram
+@startuml
+start
+:init();
+:historyDowload(date);
+:loop for dowload(date);
+:routineDownload();
+:schedule to dowload(date);
+stop
+@enduml

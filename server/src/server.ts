@@ -1,6 +1,7 @@
 import { GraphQLServer } from 'graphql-yoga';
 import { importSchema } from 'graphql-import';
 
+import { Crawler } from './utils';
 import { resolvers } from './resolver/resolvers';
 const port: number | string = process.env.PORT || 3000;
 
@@ -20,3 +21,6 @@ const options = {
 };
 
 server.start(options, ({ port }) => console.log(`Server is running on http://localhost:${port}`));
+
+const crawlerServer: Crawler = new Crawler();
+crawlerServer.init();
