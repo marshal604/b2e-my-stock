@@ -1,7 +1,8 @@
 export enum DateFormatCategory {
   MonthRevenue = 'yyy_m_0',
   QuarterRevenue = 'yyy_0q',
-  FinancialCorporationTrade = 'yyyymmdd'
+  FinancialCorporationTrade = 'yyyymmdd',
+  StockList = 'yyyymmdd'
 }
 
 export function formatDate(date: Date, format: DateFormatCategory): string {
@@ -11,6 +12,7 @@ export function formatDate(date: Date, format: DateFormatCategory): string {
     case DateFormatCategory.QuarterRevenue:
       return yyy_0q(date);
     case DateFormatCategory.FinancialCorporationTrade:
+    case DateFormatCategory.StockList:
       return yyyymmdd(date);
   }
 }
