@@ -2,7 +2,9 @@ export enum DateFormatCategory {
   MonthRevenue = 'yyy_m_0',
   QuarterRevenue = 'yyy_0q',
   FinancialCorporationTrade = 'yyyymmdd',
-  StockList = 'yyyymmdd'
+  StockList = 'yyyymmdd',
+  StockPriceAndVolumeWithQueryDate = 'yyyymmdd',
+  StockPriceAndVolumeWithPathName = 'yyyymm'
 }
 
 export function formatDate(date: Date, format: DateFormatCategory): string {
@@ -13,7 +15,10 @@ export function formatDate(date: Date, format: DateFormatCategory): string {
       return yyy_0q(date);
     case DateFormatCategory.FinancialCorporationTrade:
     case DateFormatCategory.StockList:
+    case DateFormatCategory.StockPriceAndVolumeWithQueryDate:
       return yyyymmdd(date);
+    case DateFormatCategory.StockPriceAndVolumeWithPathName:
+      return yyyymm(date);
   }
 }
 
@@ -69,6 +74,13 @@ function yyyymmdd(date: Date): string {
   const month = fetchZero({ data: date.getMonth() + 1, zeroNum: 2 });
   const day = fetchZero({ data: date.getDate(), zeroNum: 2 });
   return `${year}${month}${day}`;
+}
+
+/* return format: yyyymm */
+function yyyymm(date: Date): string {
+  const year = date.getFullYear();
+  const month = fetchZero({ data: date.getMonth() + 1, zeroNum: 2 });
+  return `${year}${month}`;
 }
 
 function fetchZero({ data, zeroNum }: { data: string | number; zeroNum: number }): string {

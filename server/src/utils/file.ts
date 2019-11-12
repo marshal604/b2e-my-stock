@@ -10,36 +10,40 @@ export interface WriteFileInput extends BasicFileInput {
   data: any;
 }
 
+export interface IsDirectoryExistInput {
+  path: string;
+}
+
 export function isFileExist({
   path,
   fileName,
   fileExtension = 'json'
-}: BasicFileInput): Promise<NodeJS.ErrnoException | void> {
+}: BasicFileInput): Promise<boolean> {
   return new Promise((resolve, reject) => {
-    fs.readFile(
-      `${rootPath}/${path}/${fileName}.${fileExtension}`,
-      { encoding: 'utf-8' },
-      (err, data) => {
-        if (err) {
-          reject(err);
-        }
-        resolve();
-      }
-    );
+    fs.exists(`${rootPath}/${path}/${fileName}.${fileExtension}`, exist => {
+      resolve(exist);
+    });
   });
 }
 
-export function IsFileExistSync({
+export function isFileExistSync({
   path,
   fileName,
   fileExtension = 'json'
 }: BasicFileInput): boolean {
-  try {
-    fs.readFileSync(`${rootPath}/${path}/${fileName}.${fileExtension}`, { encoding: 'utf-8' });
-    return true;
-  } catch {
-    return false;
-  }
+  return fs.existsSync(`${rootPath}/${path}/${fileName}.${fileExtension}`);
+}
+
+export function isDirectoryExistSync({ path }: IsDirectoryExistInput): boolean {
+  return fs.existsSync(`${rootPath}/${path}`);
+}
+
+export function isDirectoryExist({ path }: IsDirectoryExistInput): Promise<boolean> {
+  return new Promise(resolve => {
+    fs.exists(`${rootPath}/${path}`, exist => {
+      resolve(exist);
+    });
+  });
 }
 
 export function writeFile({
@@ -50,17 +54,19 @@ export function writeFile({
 }: WriteFileInput): Promise<NodeJS.ErrnoException | void> {
   return new Promise((resolve, reject) => {
     const filePath = `${rootPath}/${path}`;
-    if (!fs.existsSync(filePath)) {
-      fs.mkdirSync(filePath);
-    }
-    fs.writeFile(`${filePath}/${fileName}.${fileExtension}`, data, 'utf-8', err => {
-      if (err) {
-        console.log(`write ${path}/${fileName}.${fileExtension} has err`, err);
-        reject(err);
-        return;
+    fs.exists(filePath, exist => {
+      if (!exist) {
+        fs.mkdirSync(filePath);
       }
-      console.log(`write ${path}/${fileName}.${fileExtension}`);
-      resolve();
+      fs.writeFile(`${filePath}/${fileName}.${fileExtension}`, data, 'utf-8', err => {
+        if (err) {
+          console.log(`write ${path}/${fileName}.${fileExtension} has err`, err);
+          reject(err);
+          return;
+        }
+        console.log(`write ${path}/${fileName}.${fileExtension}`);
+        resolve();
+      });
     });
   });
 }
@@ -83,4 +89,8 @@ export function readFile({
 
 export function readFileSync({ path, fileName, fileExtension = 'json' }: BasicFileInput): string {
   return fs.readFileSync(`${rootPath}/${path}/${fileName}.${fileExtension}`, { encoding: 'utf-8' });
+}
+
+export function mkdirSync(directoryName: string) {
+  fs.mkdirSync(directoryName);
 }

@@ -10,6 +10,7 @@ export class StockListCrawler {
   constructor() {}
 
   init() {
+    this.throttle.add(this.download.bind(this, new Date()));
     this.routineDownload();
   }
 
