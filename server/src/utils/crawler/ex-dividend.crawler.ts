@@ -41,10 +41,6 @@ export class ExDividendCrawler {
       .get(url)
       .then(({ data }: any) => {
         const $ = cheerio.load(data);
-        console.log(
-          `$('body > center > table[class=hasBorder]`,
-          $('body > center > table[class=hasBorder]').length
-        );
         $('body > center > table[class=hasBorder] > tbody > tr').each((_, el: CheerioElement) => {
           const td = $(el)
             .find('td')
