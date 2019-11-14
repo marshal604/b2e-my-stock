@@ -44,7 +44,7 @@ export class StockPriceAndVolumeCrawler {
         const stockData = data.data;
         if (!stockData || stockData.length === 0) {
           console.log(
-            `StockPriceAndVolumeCrawler: ${fileName} could not available data in ${date} `
+            `StockPriceAndVolumeCrawler: code: ${code} ${fileName} could not available data in ${date} `
           );
           return;
         }
@@ -102,7 +102,15 @@ export class StockPriceAndVolumeCrawler {
     nodeSchedule.scheduleJob('0 0 12 * * *', () => {
       const date = new Date();
       console.log(`StockPriceAndVolumeCrawler: routine download in ${date}`);
-      this.throttle.add(this.download.bind(this, date));
+      const { stockList } = JSON.parse(
+        readFileSync({ path: this.filePath, fileName: 'stock-list' })
+      );
+      Array.from(stockList as { name: string; code: string }[])
+        .filter(stock => stock.code.length === 4)
+        .filter(stock => stock.code.slice(0, 2) !== '00')
+        .forEach(stock => {
+          this.throttle.add(this.download.bind(this, date, stock.code));
+        });
     });
   }
 }
