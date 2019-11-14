@@ -92,5 +92,5 @@ export function readFileSync({ path, fileName, fileExtension = 'json' }: BasicFi
 }
 
 export function mkdirSync(directoryName: string) {
-  fs.mkdirSync(directoryName);
+  fs.mkdirSync(`${rootPath}/${directoryName}`);
 }
