@@ -4,7 +4,8 @@ export enum DateFormatCategory {
   FinancialCorporationTrade = 'yyyymmdd',
   StockList = 'yyyymmdd',
   StockPriceAndVolumeWithQueryDate = 'yyyymmdd',
-  StockPriceAndVolumeWithPathName = 'yyyymm'
+  StockPriceAndVolumeWithPathName = 'yyyymm',
+  StockTrade = 'yyyymmdd'
 }
 
 export function formatDate(date: Date, format: DateFormatCategory): string {
@@ -16,6 +17,7 @@ export function formatDate(date: Date, format: DateFormatCategory): string {
     case DateFormatCategory.FinancialCorporationTrade:
     case DateFormatCategory.StockList:
     case DateFormatCategory.StockPriceAndVolumeWithQueryDate:
+    case DateFormatCategory.StockTrade:
       return yyyymmdd(date);
     case DateFormatCategory.StockPriceAndVolumeWithPathName:
       return yyyymm(date);
