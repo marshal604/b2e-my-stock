@@ -4,6 +4,7 @@ import { StockListCrawler } from '@utils/crawler/stock-list.crawler';
 import { StockPriceAndVolumeCrawler } from '@utils/crawler/stock-price-and-volume.crawler';
 import { ExDividendCrawler } from './ex-dividend.crawler';
 import { StockTradeCrawler } from './stock-trade.crawler';
+import { CollectorEquityCrawler } from './collector-equity.crawler';
 
 export class Crawler {
   private monthRevenueCrawler: MonthRevenueCrawler;
@@ -12,6 +13,7 @@ export class Crawler {
   private stockPriceAndVolumeCrawler: StockPriceAndVolumeCrawler;
   private exDividendCrawler: ExDividendCrawler;
   private stockTradeCrawler: StockTradeCrawler;
+  private collectorEquityCrawler: CollectorEquityCrawler;
   constructor() {
     this.monthRevenueCrawler = new MonthRevenueCrawler();
     this.quarterRevenueCrawler = new QuarterRevenueCrawler();
@@ -19,6 +21,7 @@ export class Crawler {
     this.stockPriceAndVolumeCrawler = new StockPriceAndVolumeCrawler();
     this.exDividendCrawler = new ExDividendCrawler();
     this.stockTradeCrawler = new StockTradeCrawler();
+    this.collectorEquityCrawler = new CollectorEquityCrawler();
   }
   init() {
     this.stockListCrawler.init();
@@ -27,5 +30,6 @@ export class Crawler {
     this.stockPriceAndVolumeCrawler.init();
     this.exDividendCrawler.init();
     this.stockTradeCrawler.init();
+    this.collectorEquityCrawler.init();
   }
 }
