@@ -20,27 +20,28 @@ export class StockTradeCrawler {
     const stockTradeList: { [id: string]: string }[] = [];
     axios
       .get(url)
-      .then((res: any) => {
-        const { data } = res.data;
-        if (!data || data.length === 0) {
+      .then(({ data: { data: stockData } }: { data: { data: string[][] } }) => {
+        if (!stockData || stockData.length === 0) {
           console.log(
             `StockTradeCrawler: code: ${stockTradeDate} could not available data in ${date} `
           );
           return;
         }
-        stockTradeList.push({
-          code: data[0], // 證券代號
-          name: data[1], // 證券名稱
-          foreignInvestorBuy: data[2], // 外陸資買進股數(不含外資自營商)
-          foreignInvestorSell: data[3], // 外陸資賣出股數(不含外資自營商)
-          foreignInvestorBuyAndSell: data[4], // 外陸資買賣超股數(不含外資自營商)
-          securtiesInvestorBuy: data[8], // 投信買進股數
-          securtiesInvestorSell: data[9], // 投信賣出股數
-          securtiesInvestorBuyAndSell: data[10], // 投信買賣超股數
-          dealerBuy: data[12], // 自營商買進股數(自行買賣)
-          dealerSell: data[13], // 自營商賣出股數(自行買賣)
-          dealerBuyAndSell: data[14], // 自營商買賣超股數(自行買賣)
-          allInvestorBuyAndSell: data[18] // 三大法人買賣超股數
+        Array.from(stockData).forEach(items => {
+          stockTradeList.push({
+            code: items[0], // 證券代號
+            name: items[1], // 證券名稱
+            foreignInvestorBuy: items[2], // 外陸資買進股數(不含外資自營商)
+            foreignInvestorSell: items[3], // 外陸資賣出股數(不含外資自營商)
+            foreignInvestorBuyAndSell: items[4], // 外陸資買賣超股數(不含外資自營商)
+            securtiesInvestorBuy: items[8], // 投信買進股數
+            securtiesInvestorSell: items[9], // 投信賣出股數
+            securtiesInvestorBuyAndSell: items[10], // 投信買賣超股數
+            dealerBuy: items[12], // 自營商買進股數(自行買賣)
+            dealerSell: items[13], // 自營商賣出股數(自行買賣)
+            dealerBuyAndSell: items[14], // 自營商買賣超股數(自行買賣)
+            allInvestorBuyAndSell: items[18] // 三大法人買賣超股數
+          });
         });
         writeFile({
           path: this.filePath,

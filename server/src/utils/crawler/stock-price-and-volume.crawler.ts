@@ -41,34 +41,36 @@ export class StockPriceAndVolumeCrawler {
     axios
       .get(url)
       .then(({ data }: any) => {
-        const stockData = data.data;
+        const stockData: string[][] = data.data;
         if (!stockData || stockData.length === 0) {
           console.log(
             `StockPriceAndVolumeCrawler: code: ${code} ${fileName} could not available data in ${date} `
           );
           return;
         }
-        const [
-          stockDate,
-          transactionVolume,
-          transactionPrice,
-          openPrice,
-          higherPrice,
-          lowerPrice,
-          closePrice,
-          priceSpreadWithhigherAndLower,
-          transactionCount
-        ] = stockData;
-        stockAndVolumeList.push({
-          date: stockDate, // 日期
-          transactionVolume, // 成交股數
-          transactionPrice, // 成交金額
-          openPrice, // 開盤價
-          higherPrice, // 最高價
-          lowerPrice, // 最低價
-          closePrice, // 收盤價
-          priceSpreadWithhigherAndLower, // 漲跌價差
-          transactionCount // 成交筆數
+        Array.from(stockData).forEach(stockDateItems => {
+          const [
+            stockDate,
+            transactionVolume,
+            transactionPrice,
+            openPrice,
+            higherPrice,
+            lowerPrice,
+            closePrice,
+            priceSpreadWithhigherAndLower,
+            transactionCount
+          ] = stockDateItems;
+          stockAndVolumeList.push({
+            date: stockDate, // 日期
+            transactionVolume, // 成交股數
+            transactionPrice, // 成交金額
+            openPrice, // 開盤價
+            higherPrice, // 最高價
+            lowerPrice, // 最低價
+            closePrice, // 收盤價
+            priceSpreadWithhigherAndLower, // 漲跌價差
+            transactionCount // 成交筆數
+          });
         });
         writeFile({
           path: `${this.filePath}/${code}`,
