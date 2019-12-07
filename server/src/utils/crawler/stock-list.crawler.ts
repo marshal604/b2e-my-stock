@@ -2,16 +2,44 @@ import axios from 'axios';
 import nodeSchedule from 'node-schedule';
 
 import { formatDate, DateFormatCategory } from '@utils/date';
-import { writeFile } from '@utils/file';
+import { writeFile, isFileExist, isDirectoryExist } from '@utils/file';
 import { Throttle, ThrottleRequestPerSecond } from '@utils/throttle';
+import { isWeekend } from '@utils/date';
 export class StockListCrawler {
   throttle = new Throttle({ requestPerSecond: ThrottleRequestPerSecond.Default });
   path = 'stock-list';
   constructor() {}
 
-  init() {
-    this.throttle.add(this.download.bind(this, new Date()));
+  init(): Promise<void> {
+    const date = isWeekend(new Date())
+      ? new Date(new Date().setDate(new Date().getDate() - 2))
+      : new Date();
+
+    this.throttle.add(this.download.bind(this, date));
     this.routineDownload();
+    return new Promise(resolve => {
+      const interval = setInterval(() => {
+        isDirectoryExist({
+          path: this.path
+        })
+          .then((exist: boolean) => {
+            if (!exist) {
+              return false;
+            }
+            return isFileExist({
+              path: this.path,
+              fileName: this.path
+            });
+          })
+          .then((exist: boolean) => {
+            if (!exist) {
+              return;
+            }
+            resolve();
+            clearInterval(interval);
+          });
+      }, 2_000);
+    });
   }
 
   download(date: Date) {
