@@ -24,12 +24,13 @@ export class Crawler {
     this.collectorEquityCrawler = new CollectorEquityCrawler();
   }
   init() {
-    this.stockListCrawler.init();
-    this.monthRevenueCrawler.init();
-    this.quarterRevenueCrawler.init();
-    this.stockPriceAndVolumeCrawler.init();
-    this.exDividendCrawler.init();
-    this.stockTradeCrawler.init();
-    this.collectorEquityCrawler.init();
+    this.stockListCrawler.init().then(() => {
+      this.monthRevenueCrawler.init();
+      this.quarterRevenueCrawler.init();
+      this.stockPriceAndVolumeCrawler.init();
+      this.exDividendCrawler.init();
+      this.stockTradeCrawler.init();
+      this.collectorEquityCrawler.init();
+    });
   }
 }

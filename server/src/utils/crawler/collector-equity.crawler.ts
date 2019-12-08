@@ -12,6 +12,8 @@ import {
   readFileSync
 } from '@utils/file';
 import { Throttle, ThrottleRequestPerSecond } from '@utils/throttle';
+import { transformCommaStringToNumber } from '@utils/transform';
+import { CollectorEquity } from '@models/shared/stock';
 
 export class CollectorEquityCrawler {
   throttle = new Throttle({ requestPerSecond: ThrottleRequestPerSecond.Default });
@@ -84,7 +86,7 @@ export class CollectorEquityCrawler {
         }
         const decodeData = iconv.decode(body, 'big-5');
         const $ = cheerio.load(decodeData);
-        const collectorEquityList: { [id: string]: CheerioElement }[] = [];
+        const collectorEquityList: CollectorEquity[] = [];
 
         $('form > table > tbody > tr > td > table[class=mt] > tbody > tr').each(
           (index: number, el: CheerioElement) => {
@@ -100,10 +102,10 @@ export class CollectorEquityCrawler {
               });
 
             collectorEquityList.push({
-              level: td[1], // 持股/單位數分級
-              people: td[2], // 人數
-              stock: td[3], // 股數/單位數
-              percent: td[4] // 占集保庫存數比例 (%)
+              level: JSON.stringify(td[1]), // 持股/單位數分級
+              people: Number(td[2]), // 人數
+              stock: transformCommaStringToNumber(JSON.stringify(td[3])), // 股數/單位數
+              percent: Number(td[4]) // 占集保庫存數比例 (%)
             });
           }
         );

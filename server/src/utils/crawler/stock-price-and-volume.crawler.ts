@@ -11,6 +11,8 @@ import {
   readFileSync
 } from '@utils/file';
 import { Throttle, ThrottleRequestPerSecond } from '@utils/throttle';
+import { transformCommaStringToNumber } from '@utils/transform';
+import { StockInfo } from '@models/shared/stock';
 export class StockPriceAndVolumeCrawler {
   throttle = new Throttle({ requestPerSecond: ThrottleRequestPerSecond.Default });
   filePath = 'stock-list';
@@ -37,7 +39,7 @@ export class StockPriceAndVolumeCrawler {
     );
     const fileName = formatDate(date, DateFormatCategory.StockPriceAndVolumeWithPathName);
     const url = `https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date=${stockPriceAndVolumeDate}&stockNo=${code}`;
-    const stockAndVolumeList: { [id: string]: string }[] = [];
+    const stockAndVolumeList: StockInfo[] = [];
     axios
       .get(url)
       .then(({ data }: any) => {
@@ -61,15 +63,15 @@ export class StockPriceAndVolumeCrawler {
             transactionCount
           ] = stockDateItems;
           stockAndVolumeList.push({
-            date: stockDate, // 日期
-            transactionVolume, // 成交股數
-            transactionPrice, // 成交金額
-            openPrice, // 開盤價
-            higherPrice, // 最高價
-            lowerPrice, // 最低價
-            closePrice, // 收盤價
-            priceSpreadWithhigherAndLower, // 漲跌價差
-            transactionCount // 成交筆數
+            date: JSON.stringify(stockDate), // 日期
+            transactionVolume: transformCommaStringToNumber(JSON.stringify(transactionVolume)), // 成交股數
+            transactionPrice: transformCommaStringToNumber(JSON.stringify(transactionPrice)), // 成交金額
+            openPrice: Number(openPrice), // 開盤價
+            higherPrice: Number(higherPrice), // 最高價
+            lowerPrice: Number(lowerPrice), // 最低價
+            closePrice: Number(closePrice), // 收盤價
+            priceSpreadWithhigherAndLower: Number(priceSpreadWithhigherAndLower), // 漲跌價差
+            transactionCount: Number(transactionCount) // 成交筆數
           });
         });
         writeFile({

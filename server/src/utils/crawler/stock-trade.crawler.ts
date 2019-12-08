@@ -4,6 +4,8 @@ import nodeSchedule from 'node-schedule';
 import { formatDate, DateFormatCategory } from '@utils/date';
 import { writeFile, isFileExistSync } from '@utils/file';
 import { Throttle, ThrottleRequestPerSecond } from '@utils/throttle';
+import { transformCommaStringToNumber } from '@utils/transform';
+import { TradeInfo } from '@models/shared/stock';
 export class StockTradeCrawler {
   throttle = new Throttle({ requestPerSecond: ThrottleRequestPerSecond.Default });
   filePath = 'trade-info';
@@ -17,7 +19,7 @@ export class StockTradeCrawler {
   download(date: Date) {
     const stockTradeDate = formatDate(date, DateFormatCategory.StockTrade);
     const url = `http://www.twse.com.tw/fund/T86?response=json&date=${stockTradeDate}&selectType=ALLBUT0999`;
-    const stockTradeList: { [id: string]: string }[] = [];
+    const stockTradeList: TradeInfo[] = [];
     axios
       .get(url)
       .then(({ data: { data: stockData } }: { data: { data: string[][] } }) => {
@@ -29,18 +31,18 @@ export class StockTradeCrawler {
         }
         Array.from(stockData).forEach(items => {
           stockTradeList.push({
-            code: items[0], // 證券代號
-            name: items[1], // 證券名稱
-            foreignInvestorBuy: items[2], // 外陸資買進股數(不含外資自營商)
-            foreignInvestorSell: items[3], // 外陸資賣出股數(不含外資自營商)
-            foreignInvestorBuyAndSell: items[4], // 外陸資買賣超股數(不含外資自營商)
-            securtiesInvestorBuy: items[8], // 投信買進股數
-            securtiesInvestorSell: items[9], // 投信賣出股數
-            securtiesInvestorBuyAndSell: items[10], // 投信買賣超股數
-            dealerBuy: items[12], // 自營商買進股數(自行買賣)
-            dealerSell: items[13], // 自營商賣出股數(自行買賣)
-            dealerBuyAndSell: items[14], // 自營商買賣超股數(自行買賣)
-            allInvestorBuyAndSell: items[18] // 三大法人買賣超股數
+            code: JSON.stringify(items[0]), // 證券代號
+            name: JSON.stringify(items[1]), // 證券名稱
+            foreignInvestorBuy: transformCommaStringToNumber(JSON.stringify(items[2])), // 外陸資買進股數(不含外資自營商)
+            foreignInvestorSell: transformCommaStringToNumber(JSON.stringify(items[3])), // 外陸資賣出股數(不含外資自營商)
+            foreignInvestorBuyAndSell: transformCommaStringToNumber(JSON.stringify(items[4])), // 外陸資買賣超股數(不含外資自營商)
+            securtiesInvestorBuy: transformCommaStringToNumber(JSON.stringify(items[8])), // 投信買進股數
+            securtiesInvestorSell: transformCommaStringToNumber(JSON.stringify(items[9])), // 投信賣出股數
+            securtiesInvestorBuyAndSell: transformCommaStringToNumber(JSON.stringify(items[10])), // 投信買賣超股數
+            dealerBuy: transformCommaStringToNumber(JSON.stringify(items[12])), // 自營商買進股數(自行買賣)
+            dealerSell: transformCommaStringToNumber(JSON.stringify(items[13])), // 自營商賣出股數(自行買賣)
+            dealerBuyAndSell: transformCommaStringToNumber(JSON.stringify(items[14])), // 自營商買賣超股數(自行買賣)
+            allInvestorBuyAndSell: transformCommaStringToNumber(JSON.stringify(items[18])) // 三大法人買賣超股數
           });
         });
         writeFile({
