@@ -5,6 +5,7 @@ import { formatDate, DateFormatCategory } from '@utils/date';
 import { writeFile, isFileExist, isDirectoryExist } from '@utils/file';
 import { Throttle, ThrottleRequestPerSecond } from '@utils/throttle';
 import { isWeekend } from '@utils/date';
+import { Stock } from '@models/shared/stock';
 export class StockListCrawler {
   throttle = new Throttle({ requestPerSecond: ThrottleRequestPerSecond.Default });
   path = 'stock-list';
@@ -53,12 +54,10 @@ export class StockListCrawler {
           console.log(`StockListCrawler: could not available data in ${date} `);
           return;
         }
-        const stockList: { code: string; name: string }[] = Array.from(stockInfoList).map(
-          stock => ({
-            code: stock[0],
-            name: stock[1]
-          })
-        );
+        const stockList: Stock[] = Array.from(stockInfoList).map(stock => ({
+          code: stock[0],
+          name: stock[1]
+        }));
 
         writeFile({
           path: this.path,

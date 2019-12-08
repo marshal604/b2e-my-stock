@@ -11,6 +11,7 @@ import {
   readFileSync
 } from '@utils/file';
 import { Throttle, ThrottleRequestPerSecond } from '@utils/throttle';
+import { ExDividend } from '@models/shared/stock';
 export class ExDividendCrawler {
   throttle = new Throttle({ requestPerSecond: ThrottleRequestPerSecond.Default });
   filePath = 'ex-dividend';
@@ -36,7 +37,7 @@ export class ExDividendCrawler {
   download(date: Date, code: string) {
     const currentYear = date.getFullYear() - 1911;
     const url = `https://mops.twse.com.tw/mops/web/ajax_t05st09_2?encodeURIComponent=1&step=1&firstin=1&off=1&keyword4=&code1=&TYPEK2=&checkbtn=&queryName=co_id&inpuType=co_id&TYPEK=all&isnew=false&co_id=${code}&date1=100&date2=${currentYear}&qryType=2`;
-    const exDividendList: { [id: string]: string | CheerioElement }[] = [];
+    const exDividendList: ExDividend[] = [];
     axios
       .get(url)
       .then(({ data }: any) => {
@@ -53,11 +54,11 @@ export class ExDividendCrawler {
             return;
           }
           const parseData = {
-            date: td[1],
-            retainedEarningsCashDividend: td[10], // 盈餘分配之現金股利(元/股)
-            legalReserveCashDividend: td[11], // 法定盈餘公積、資本公積發放之現金(元/股)
-            retainedEarningsStockDividend: td[13], // 盈餘轉增資配股(元/股)
-            legalReserveStockDividend: td[14] // 法定盈餘公積、資本公積轉增資配股(元/股)
+            date: JSON.stringify(td[1]),
+            retainedEarningsCashDividend: Number(td[10]), // 盈餘分配之現金股利(元/股)
+            legalReserveCashDividend: Number(td[11]), // 法定盈餘公積、資本公積發放之現金(元/股)
+            retainedEarningsStockDividend: Number(td[13]), // 盈餘轉增資配股(元/股)
+            legalReserveStockDividend: Number(td[14]) // 法定盈餘公積、資本公積轉增資配股(元/股)
           };
 
           exDividendList.push(parseData);

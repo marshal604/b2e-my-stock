@@ -7,6 +7,8 @@ import { formatDate, DateFormatCategory } from '@utils/date';
 import { writeFile } from '@utils/file';
 import { Throttle, ThrottleRequestPerSecond } from '@utils/throttle';
 import { readFileSync } from '@utils/file';
+import { transformCommaStringToNumber } from '@utils/transform';
+import { MonthRevenue } from '@models/shared/stock';
 export class MonthRevenueCrawler {
   throttle = new Throttle({ requestPerSecond: ThrottleRequestPerSecond.Default });
   constructor() {}
@@ -19,7 +21,7 @@ export class MonthRevenueCrawler {
   download(date: Date) {
     const monthRevenueDate = formatDate(date, DateFormatCategory.MonthRevenue);
     const url = `https://mops.twse.com.tw/nas/t21/sii/t21sc03_${monthRevenueDate}.html`;
-    const monthRevenueList: { [id: string]: CheerioElement }[] = [];
+    const monthRevenueList: MonthRevenue[] = [];
     axios
       .get(url, {
         responseType: 'arraybuffer',
@@ -48,18 +50,18 @@ export class MonthRevenueCrawler {
               }
 
               const parseData = {
-                code: td[0], // 公司代號
-                name: td[1], // 公司名稱
+                code: JSON.stringify(td[0]), // 公司代號
+                name: JSON.stringify(td[1]), // 公司名稱
                 /* 營業收入 */
-                currentMonthRevenue: td[2], // 當月營收
-                lastMonthRevenue: td[3], // 上月營收
-                lastYearRevenue: td[4], // 去年當月營收
-                compareLastMonthRatio: td[5], // 上月比較增減(%)
-                compareLastYearRatio: td[6], // 去年同月增減(%)
+                currentMonthRevenue: transformCommaStringToNumber(JSON.stringify(td[2])), // 當月營收
+                lastMonthRevenue: transformCommaStringToNumber(JSON.stringify(td[3])), // 上月營收
+                lastYearRevenue: transformCommaStringToNumber(JSON.stringify(td[4])), // 去年當月營收
+                compareLastMonthRatio: Number(td[5]), // 上月比較增減(%)
+                compareLastYearRatio: Number(td[6]), // 去年同月增減(%)
                 /* 累計營業收入 */
-                currentMonthAccumulateRevenue: td[7], // 當月累計營收
-                lastYearAccumulateRevenue: td[8], // 去年累計營收
-                compareAccumulateRatio: td[9] // 前期累計比較增減(%)
+                currentMonthAccumulateRevenue: transformCommaStringToNumber(JSON.stringify(td[7])), // 當月累計營收
+                lastYearAccumulateRevenue: transformCommaStringToNumber(JSON.stringify(td[8])), // 去年累計營收
+                compareAccumulateRatio: Number(td[9]) // 前期累計比較增減(%)
               };
 
               monthRevenueList.push(parseData);
