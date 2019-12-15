@@ -62,7 +62,7 @@ export class StockListCrawler {
         writeFile({
           path: this.path,
           fileName: 'stock-list',
-          data: JSON.stringify({ stockList })
+          data: JSON.stringify({ data: stockList })
         });
       })
       .catch(({ message }: Error) => console.log('StockListCrawler:' + message));

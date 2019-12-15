@@ -31,24 +31,24 @@ export class StockTradeCrawler {
         }
         Array.from(stockData).forEach(items => {
           stockTradeList.push({
-            code: JSON.stringify(items[0]), // 證券代號
-            name: JSON.stringify(items[1]), // 證券名稱
-            foreignInvestorBuy: transformCommaStringToNumber(JSON.stringify(items[2])), // 外陸資買進股數(不含外資自營商)
-            foreignInvestorSell: transformCommaStringToNumber(JSON.stringify(items[3])), // 外陸資賣出股數(不含外資自營商)
-            foreignInvestorBuyAndSell: transformCommaStringToNumber(JSON.stringify(items[4])), // 外陸資買賣超股數(不含外資自營商)
-            securtiesInvestorBuy: transformCommaStringToNumber(JSON.stringify(items[8])), // 投信買進股數
-            securtiesInvestorSell: transformCommaStringToNumber(JSON.stringify(items[9])), // 投信賣出股數
-            securtiesInvestorBuyAndSell: transformCommaStringToNumber(JSON.stringify(items[10])), // 投信買賣超股數
-            dealerBuy: transformCommaStringToNumber(JSON.stringify(items[12])), // 自營商買進股數(自行買賣)
-            dealerSell: transformCommaStringToNumber(JSON.stringify(items[13])), // 自營商賣出股數(自行買賣)
-            dealerBuyAndSell: transformCommaStringToNumber(JSON.stringify(items[14])), // 自營商買賣超股數(自行買賣)
-            allInvestorBuyAndSell: transformCommaStringToNumber(JSON.stringify(items[18])) // 三大法人買賣超股數
+            code: String(items[0]).trim(), // 證券代號
+            name: String(items[1]).trim(), // 證券名稱
+            foreignInvestorBuy: transformCommaStringToNumber(String(items[2])), // 外陸資買進股數(不含外資自營商)
+            foreignInvestorSell: transformCommaStringToNumber(String(items[3])), // 外陸資賣出股數(不含外資自營商)
+            foreignInvestorBuyAndSell: transformCommaStringToNumber(String(items[4])), // 外陸資買賣超股數(不含外資自營商)
+            securtiesInvestorBuy: transformCommaStringToNumber(String(items[8])), // 投信買進股數
+            securtiesInvestorSell: transformCommaStringToNumber(String(items[9])), // 投信賣出股數
+            securtiesInvestorBuyAndSell: transformCommaStringToNumber(String(items[10])), // 投信買賣超股數
+            dealerBuy: transformCommaStringToNumber(String(items[12])), // 自營商買進股數(自行買賣)
+            dealerSell: transformCommaStringToNumber(String(items[13])), // 自營商賣出股數(自行買賣)
+            dealerBuyAndSell: transformCommaStringToNumber(String(items[14])), // 自營商買賣超股數(自行買賣)
+            allInvestorBuyAndSell: transformCommaStringToNumber(String(items[18])) // 三大法人買賣超股數
           });
         });
         writeFile({
           path: this.filePath,
           fileName: stockTradeDate,
-          data: JSON.stringify({ stockTradeList })
+          data: JSON.stringify({ data: stockTradeList })
         });
       })
       .catch(({ message }: Error) => console.log('StockTradeCrawler:' + message));

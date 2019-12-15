@@ -22,7 +22,7 @@ export class ExDividendCrawler {
     if (!isDirectoryExistSync({ path: this.filePath })) {
       mkdirSync(this.filePath);
     }
-    const { stockList } = JSON.parse(
+    const { data: stockList } = JSON.parse(
       readFileSync({ path: this.stockListFilePath, fileName: 'stock-list' })
     );
     Array.from(stockList as { name: string; code: string }[])
@@ -54,7 +54,7 @@ export class ExDividendCrawler {
             return;
           }
           const parseData = {
-            date: JSON.stringify(td[1]),
+            date: String(td[1]).trim(),
             retainedEarningsCashDividend: Number(td[10]), // 盈餘分配之現金股利(元/股)
             legalReserveCashDividend: Number(td[11]), // 法定盈餘公積、資本公積發放之現金(元/股)
             retainedEarningsStockDividend: Number(td[13]), // 盈餘轉增資配股(元/股)
@@ -70,7 +70,7 @@ export class ExDividendCrawler {
         writeFile({
           path: `${this.filePath}/${code}`,
           fileName: code,
-          data: JSON.stringify({ exDividend: exDividendList })
+          data: JSON.stringify({ data: exDividendList })
         });
       })
       .catch(({ message }: Error) => console.log('ExDividendCrawler:' + message));
@@ -94,7 +94,7 @@ export class ExDividendCrawler {
     nodeSchedule.scheduleJob('0 0 23 * * *', () => {
       const date = new Date();
       console.log(`ExDividendCrawler: routine download in ${date}`);
-      const { stockList } = JSON.parse(
+      const { data: stockList } = JSON.parse(
         readFileSync({ path: this.stockListFilePath, fileName: 'stock-list' })
       );
       Array.from(stockList as { name: string; code: string }[])

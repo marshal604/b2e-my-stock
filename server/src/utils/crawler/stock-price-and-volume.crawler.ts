@@ -22,7 +22,9 @@ export class StockPriceAndVolumeCrawler {
     if (!isDirectoryExistSync({ path: this.filePath })) {
       mkdirSync(this.filePath);
     }
-    const { stockList } = JSON.parse(readFileSync({ path: this.filePath, fileName: 'stock-list' }));
+    const { data: stockList } = JSON.parse(
+      readFileSync({ path: this.filePath, fileName: 'stock-list' })
+    );
     Array.from(stockList as { name: string; code: string }[])
       .filter(stock => stock.code.length === 4)
       .filter(stock => stock.code.slice(0, 2) !== '00')
@@ -63,21 +65,21 @@ export class StockPriceAndVolumeCrawler {
             transactionCount
           ] = stockDateItems;
           stockAndVolumeList.push({
-            date: JSON.stringify(stockDate), // 日期
-            transactionVolume: transformCommaStringToNumber(JSON.stringify(transactionVolume)), // 成交股數
-            transactionPrice: transformCommaStringToNumber(JSON.stringify(transactionPrice)), // 成交金額
+            date: String(stockDate).trim(), // 日期
+            transactionVolume: transformCommaStringToNumber(String(transactionVolume)), // 成交股數
+            transactionPrice: transformCommaStringToNumber(String(transactionPrice)), // 成交金額
             openPrice: Number(openPrice), // 開盤價
             higherPrice: Number(higherPrice), // 最高價
             lowerPrice: Number(lowerPrice), // 最低價
             closePrice: Number(closePrice), // 收盤價
             priceSpreadWithhigherAndLower: Number(priceSpreadWithhigherAndLower), // 漲跌價差
-            transactionCount: Number(transactionCount) // 成交筆數
+            transactionCount: transformCommaStringToNumber(String(transactionCount)) // 成交筆數
           });
         });
         writeFile({
           path: `${this.filePath}/${code}`,
           fileName,
-          data: JSON.stringify({ stockAndVolumeList })
+          data: JSON.stringify({ data: stockAndVolumeList })
         });
       })
       .catch(({ message }: Error) => console.log('StockPriceAndVolumeCrawler:' + message));
@@ -106,7 +108,7 @@ export class StockPriceAndVolumeCrawler {
     nodeSchedule.scheduleJob('0 0 12 * * *', () => {
       const date = new Date();
       console.log(`StockPriceAndVolumeCrawler: routine download in ${date}`);
-      const { stockList } = JSON.parse(
+      const { data: stockList } = JSON.parse(
         readFileSync({ path: this.filePath, fileName: 'stock-list' })
       );
       Array.from(stockList as { name: string; code: string }[])
