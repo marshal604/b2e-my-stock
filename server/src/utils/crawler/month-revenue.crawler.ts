@@ -50,17 +50,17 @@ export class MonthRevenueCrawler {
               }
 
               const parseData = {
-                code: JSON.stringify(td[0]), // 公司代號
-                name: JSON.stringify(td[1]), // 公司名稱
+                code: String(td[0]).trim(), // 公司代號
+                name: String(td[1]).trim(), // 公司名稱
                 /* 營業收入 */
-                currentMonthRevenue: transformCommaStringToNumber(JSON.stringify(td[2])), // 當月營收
-                lastMonthRevenue: transformCommaStringToNumber(JSON.stringify(td[3])), // 上月營收
-                lastYearRevenue: transformCommaStringToNumber(JSON.stringify(td[4])), // 去年當月營收
+                currentMonthRevenue: transformCommaStringToNumber(String(td[2])), // 當月營收
+                lastMonthRevenue: transformCommaStringToNumber(String(td[3])), // 上月營收
+                lastYearRevenue: transformCommaStringToNumber(String(td[4])), // 去年當月營收
                 compareLastMonthRatio: Number(td[5]), // 上月比較增減(%)
                 compareLastYearRatio: Number(td[6]), // 去年同月增減(%)
                 /* 累計營業收入 */
-                currentMonthAccumulateRevenue: transformCommaStringToNumber(JSON.stringify(td[7])), // 當月累計營收
-                lastYearAccumulateRevenue: transformCommaStringToNumber(JSON.stringify(td[8])), // 去年累計營收
+                currentMonthAccumulateRevenue: transformCommaStringToNumber(String(td[7])), // 當月累計營收
+                lastYearAccumulateRevenue: transformCommaStringToNumber(String(td[8])), // 去年累計營收
                 compareAccumulateRatio: Number(td[9]) // 前期累計比較增減(%)
               };
 
@@ -75,7 +75,7 @@ export class MonthRevenueCrawler {
         writeFile({
           path: 'month-revenue',
           fileName: monthRevenueDate,
-          data: JSON.stringify({ revenue: monthRevenueList })
+          data: JSON.stringify({ data: monthRevenueList })
         });
       })
       .catch(({ message }: Error) => console.log('MonthRevenueCrawler:' + message));

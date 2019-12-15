@@ -48,17 +48,17 @@ export class QuarterRevenueCrawler {
             }
 
             const parseData = {
-              code: JSON.stringify(td[0]), // 公司代號
-              name: JSON.stringify(td[1]), // 公司名稱
-              operatingRevenue: transformCommaStringToNumber(JSON.stringify(td[2])), // 營業收入
-              operatingCost: transformCommaStringToNumber(JSON.stringify(td[3])), // 營業成本
-              grossProfit: transformCommaStringToNumber(JSON.stringify(td[9])), // 營業毛利(毛損)淨額
-              operatingExpenses: transformCommaStringToNumber(JSON.stringify(td[10])), // 營業費用
-              operatingProfit: transformCommaStringToNumber(JSON.stringify(td[12])), // 營業利益(損失)
-              nonOperatingIncome: transformCommaStringToNumber(JSON.stringify(td[13])), // 營業外收入及支出
-              preTaxIncome: transformCommaStringToNumber(JSON.stringify(td[14])), // 稅前淨利(淨損)
-              incomeTaxExpense: transformCommaStringToNumber(JSON.stringify(td[15])), // 所得税費用(利益)
-              netIncome: transformCommaStringToNumber(JSON.stringify(td[19])), // 稅後淨利(淨損)
+              code: String(td[0]).trim(), // 公司代號
+              name: String(td[1]).trim(), // 公司名稱
+              operatingRevenue: transformCommaStringToNumber(String(td[2])), // 營業收入
+              operatingCost: transformCommaStringToNumber(String(td[3])), // 營業成本
+              grossProfit: transformCommaStringToNumber(String(td[9])), // 營業毛利(毛損)淨額
+              operatingExpenses: transformCommaStringToNumber(String(td[10])), // 營業費用
+              operatingProfit: transformCommaStringToNumber(String(td[12])), // 營業利益(損失)
+              nonOperatingIncome: transformCommaStringToNumber(String(td[13])), // 營業外收入及支出
+              preTaxIncome: transformCommaStringToNumber(String(td[14])), // 稅前淨利(淨損)
+              incomeTaxExpense: transformCommaStringToNumber(String(td[15])), // 所得税費用(利益)
+              netIncome: transformCommaStringToNumber(String(td[19])), // 稅後淨利(淨損)
               eps: Number(td[29]) // 基本每股盈餘(元)
             };
 
@@ -74,7 +74,7 @@ export class QuarterRevenueCrawler {
         writeFile({
           path: this.filePath,
           fileName: quarterRevenueDate,
-          data: JSON.stringify({ revenue: quarterRevenueList })
+          data: JSON.stringify({ data: quarterRevenueList })
         });
       })
       .catch(({ message }: Error) => console.log('QuarterRevenueCrawler:' + message));

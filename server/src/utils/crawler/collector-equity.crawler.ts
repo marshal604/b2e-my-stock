@@ -26,7 +26,7 @@ export class CollectorEquityCrawler {
     if (!isDirectoryExistSync({ path: this.filePath })) {
       mkdirSync(this.filePath);
     }
-    const { stockList } = JSON.parse(
+    const { data: stockList } = JSON.parse(
       readFileSync({ path: this.stockListFilePath, fileName: 'stock-list' })
     );
     request.post(
@@ -102,9 +102,9 @@ export class CollectorEquityCrawler {
               });
 
             collectorEquityList.push({
-              level: JSON.stringify(td[1]), // 持股/單位數分級
-              people: Number(td[2]), // 人數
-              stock: transformCommaStringToNumber(JSON.stringify(td[3])), // 股數/單位數
+              level: String(td[1]).trim(), // 持股/單位數分級
+              people: transformCommaStringToNumber(String(td[2])), // 人數
+              stock: transformCommaStringToNumber(String(td[3])), // 股數/單位數
               percent: Number(td[4]) // 占集保庫存數比例 (%)
             });
           }
@@ -112,7 +112,7 @@ export class CollectorEquityCrawler {
         writeFile({
           path: `${this.filePath}/${code}`,
           fileName: collectorEquityDate,
-          data: JSON.stringify({ collectorEquityList })
+          data: JSON.stringify({ data: collectorEquityList })
         });
       }
     );
