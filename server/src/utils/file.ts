@@ -6,12 +6,24 @@ export interface BasicFileInput {
   fileName: string;
   fileExtension?: string;
 }
+
 export interface WriteFileInput extends BasicFileInput {
   data: any;
 }
 
 export interface IsDirectoryExistInput {
   path: string;
+}
+
+export interface RecursiveReadFileInput {
+  path: string;
+  fileNameList: string[];
+  fileExtension?: string;
+}
+
+export interface RecursiveReadFileOutput<T> {
+  date: string;
+  data: T;
 }
 
 export function isFileExist({
@@ -93,4 +105,27 @@ export function readFileSync({ path, fileName, fileExtension = 'json' }: BasicFi
 
 export function mkdirSync(directoryName: string) {
   fs.mkdirSync(`${rootPath}/${directoryName}`);
+}
+
+export function recursiveReadFile<T>({
+  path,
+  fileNameList,
+  fileExtension = 'json'
+}: RecursiveReadFileInput): Promise<RecursiveReadFileOutput<T[]>[]> {
+  const filePromiseList = fileNameList.map(fileName =>
+    readFile({ path, fileName, fileExtension })
+      .then(data => {
+        return {
+          date: fileName,
+          data: JSON.parse(data).data as T[]
+        };
+      })
+      .catch(() => {
+        return {
+          date: fileName,
+          data: [] as T[]
+        };
+      })
+  );
+  return Promise.all(filePromiseList);
 }
