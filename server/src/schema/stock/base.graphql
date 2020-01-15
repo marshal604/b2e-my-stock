@@ -1,0 +1,9 @@
+input BaseStockInput {
+  code: String!
+  startTime: String!
+}
+
+type Stock {
+  code: String!
+  name: String!
+}
