@@ -9,7 +9,7 @@ export interface StockInfo {
   higherPrice: number;
   lowerPrice: number;
   closePrice: number;
-  priceSpreadWithhigherAndLower: number;
+  priceSpreadWithHigherAndLower: number;
   transactionCount: number;
 }
 export interface GetTradeInfoInput extends BaseStockInput {}
@@ -19,9 +19,9 @@ export interface TradeInfo {
   foreignInvestorBuy: number;
   foreignInvestorSell: number;
   foreignInvestorBuyAndSell: number;
-  securtiesInvestorBuy: number;
-  securtiesInvestorSell: number;
-  securtiesInvestorBuyAndSell: number;
+  securitiesInvestorBuy: number;
+  securitiesInvestorSell: number;
+  securitiesInvestorBuyAndSell: number;
   dealerBuy: number;
   dealerSell: number;
   dealerBuyAndSell: number;
