@@ -1,0 +1,96 @@
+input GetMonthRevenueInput {
+  code: String!
+  startTime: String!
+}
+
+type MonthRevenue {
+  code: String
+  name: String
+  currentMonthRevenue: Int
+  currentMonthAccumulateRevenue: Int
+  lastMonthRevenue: Int
+  lastYearRevenue: Int
+  lastYearAccumulateRevenue: Int
+  compareLastMonthRatio: Float
+  compareLastYearRatio: Float
+  compareAccumulateRatio: Float
+}
+
+input GetQuarterRevenueInput {
+  code: String!
+  startTime: String!
+}
+
+type QuarterRevenue {
+  code: String
+  name: String
+  operatingRevenue: Int
+  operatingCost: Int
+  grossProfit: Int
+  operatingExpenses: Int
+  operatingProfit: Int
+  nonOperatingIncome: Int
+  preTaxIncome: Int
+  incomeTaxExpense: Int
+  netIncome: Int
+  eps: Float
+}
+
+type QuarterRevenueList {
+  list: [QuarterRevenueItem]!
+}
+
+type QuarterRevenueItem {
+  date: String!
+  data: QuarterRevenue
+}
+
+type QuarterRevenueFilterList {
+  list: [QuarterRevenue]!
+}
+
+type MonthRevenueList {
+  list: [MonthRevenueItem]!
+}
+
+type MonthRevenueItem {
+  date: String!
+  data: MonthRevenue
+}
+
+type MonthRevenueFilterList {
+  list: [MonthRevenue]!
+}
+
+input GetIncreasingMonthRevenueInput {
+  compareWith: MonthRevenueCompareWith!
+  filter: MonthRevenueFilter!
+}
+
+input MonthRevenueFilter {
+  compareAmount: Int!
+  percent: Int
+}
+
+enum MonthRevenueCompareWith {
+  lastMonth
+  lastYear
+  lastYearAndMonth
+}
+
+input GetIncreasingQuarterRevenueInput {
+  compareWith: QuarterRevenueCompareWith!
+  filter: QuarterRevenueFilter!
+}
+
+input QuarterRevenueFilter {
+  compareAmount: Int!
+  isEpsPositive: Boolean
+  epsIncreasingPercent: Int
+  grossProfitIncreasingPercent: Int
+}
+
+enum QuarterRevenueCompareWith {
+  lastQuarter
+  lastYear
+}
