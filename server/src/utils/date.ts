@@ -32,8 +32,9 @@ export function isWeekend(date: Date): boolean {
 
 /* return format: yyy_m_0 */
 function yyy_m_0(date: Date): string {
-  const year = date.getFullYear() - 1911;
-  const month = date.getMonth() + 1;
+  const isMonthZero = date.getMonth() === 0;
+  const year = date.getFullYear() - 1911 - (isMonthZero ? 1 : 0);
+  const month = isMonthZero ? 12 : date.getMonth();
   return `${year}_${month}_0`;
 }
 
