@@ -12,3 +12,7 @@ export interface BaseStockItem<T> {
   date: string;
   data: T;
 }
+
+export interface BaseStockList<T> {
+  list: BaseStockItem<T>[];
+}
