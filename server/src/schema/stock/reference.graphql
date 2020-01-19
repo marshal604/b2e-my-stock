@@ -1,0 +1,43 @@
+input GetCollectorEquityListInput {
+  code: String!
+  startTime: String!
+}
+
+input GetCollectorEquityChangeListInput {
+  changeList: [CollectorEquityLevel]
+}
+
+type GetCollectorEquityListOutput {
+  list: [GetCollectorEquityItemData]!
+}
+
+type GetCollectorEquityItemData {
+  date: String!
+  data: [CollectorEquity]!
+}
+
+type GetCollectorEquityChangeListOutput {
+  list: [CollectorEquityChangeItem]!
+}
+
+type CollectorEquityChangeItem {
+  code: String!
+  name: String!
+  levelChangeList: [String]!
+}
+
+type CollectorEquity {
+  level: String!
+  people: Int!
+  stock: Float!
+  percent: Float!
+}
+
+enum CollectorEquityLevel {
+  Have100Up
+  Have200Up
+  Have400Up
+  Have600Up
+  Have800Up
+  Have1000Up
+}
