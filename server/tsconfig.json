@@ -51,6 +51,7 @@
     /* Base directory to resolve non-absolute module names. */
     "paths": {
       "@service/*": ["src/services/*"],
+      "@service": ["src/services"],
       "@models/*": ["src/model/*"],
       "@utils/*": ["src/utils/*"]
     },

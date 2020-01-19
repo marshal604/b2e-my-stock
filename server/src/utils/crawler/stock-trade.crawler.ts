@@ -36,9 +36,9 @@ export class StockTradeCrawler {
             foreignInvestorBuy: transformCommaStringToNumber(String(items[2])), // 外陸資買進股數(不含外資自營商)
             foreignInvestorSell: transformCommaStringToNumber(String(items[3])), // 外陸資賣出股數(不含外資自營商)
             foreignInvestorBuyAndSell: transformCommaStringToNumber(String(items[4])), // 外陸資買賣超股數(不含外資自營商)
-            securtiesInvestorBuy: transformCommaStringToNumber(String(items[8])), // 投信買進股數
-            securtiesInvestorSell: transformCommaStringToNumber(String(items[9])), // 投信賣出股數
-            securtiesInvestorBuyAndSell: transformCommaStringToNumber(String(items[10])), // 投信買賣超股數
+            securitiesInvestorBuy: transformCommaStringToNumber(String(items[8])), // 投信買進股數
+            securitiesInvestorSell: transformCommaStringToNumber(String(items[9])), // 投信賣出股數
+            securitiesInvestorBuyAndSell: transformCommaStringToNumber(String(items[10])), // 投信買賣超股數
             dealerBuy: transformCommaStringToNumber(String(items[12])), // 自營商買進股數(自行買賣)
             dealerSell: transformCommaStringToNumber(String(items[13])), // 自營商賣出股數(自行買賣)
             dealerBuyAndSell: transformCommaStringToNumber(String(items[14])), // 自營商買賣超股數(自行買賣)

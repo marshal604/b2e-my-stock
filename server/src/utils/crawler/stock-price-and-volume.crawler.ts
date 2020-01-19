@@ -61,7 +61,7 @@ export class StockPriceAndVolumeCrawler {
             higherPrice,
             lowerPrice,
             closePrice,
-            priceSpreadWithhigherAndLower,
+            priceSpreadWithHigherAndLower,
             transactionCount
           ] = stockDateItems;
           stockAndVolumeList.push({
@@ -72,7 +72,7 @@ export class StockPriceAndVolumeCrawler {
             higherPrice: Number(higherPrice), // 最高價
             lowerPrice: Number(lowerPrice), // 最低價
             closePrice: Number(closePrice), // 收盤價
-            priceSpreadWithhigherAndLower: Number(priceSpreadWithhigherAndLower), // 漲跌價差
+            priceSpreadWithHigherAndLower: Number(priceSpreadWithHigherAndLower), // 漲跌價差
             transactionCount: transformCommaStringToNumber(String(transactionCount)) // 成交筆數
           });
         });

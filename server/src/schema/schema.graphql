@@ -1,5 +1,6 @@
 # import * from "stock/base.graphql"
 # import * from "stock/revenue.graphql"
+# import * from "stock/reference.graphql"
 
 type Query {
   sayHello(name: String): String!
@@ -9,4 +10,8 @@ type Query {
   getIncreasingQuarterRevenueList(
     request: GetIncreasingQuarterRevenueInput!
   ): QuarterRevenueFilterList!
+  getCollectorEquityList(request: GetCollectorEquityListInput!): GetCollectorEquityListOutput!
+  getCollectorEquityChangeList(
+    request: GetCollectorEquityChangeListInput!
+  ): GetCollectorEquityChangeListOutput!
 }
