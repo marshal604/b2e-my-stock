@@ -22,7 +22,7 @@ import {
 import {
   GetExDividendInput,
   ExDividend,
-  GetCollectorEquityInput,
+  GetCollectorEquityListInput,
   CollectorEquity
 } from '@models/shared/stock/reference.model';
 
@@ -128,7 +128,9 @@ export function getExDividend(input: GetExDividendInput): Promise<ExDividendObje
     });
 }
 
-export function getCollectorEquity(input: GetCollectorEquityInput): Promise<CollectorEquityObject> {
+export function getCollectorEquity(
+  input: GetCollectorEquityListInput
+): Promise<CollectorEquityObject> {
   const date = new Date(input.startTime);
   const path = `collector-equity/${input.code}`;
 
