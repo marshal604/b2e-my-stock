@@ -7,16 +7,21 @@ import {
   CollectorEquityLevel,
   CollectorEquityLevelMapping,
   CollectorEquityChangeItem,
-  GetCollectorEquityChangeListOutput
+  GetCollectorEquityChangeListOutput,
+  GetExDividendInput,
+  GetExDividendListOutput,
+  ExDividend
 } from '@models/shared/stock';
 import { formatDate, DateFormatCategory } from '@utils/date';
-import { recursiveReadFile, RecursiveReadFileOutput, readFileSync } from '@utils/file';
+import { recursiveReadFile, RecursiveReadFileOutput, readFileSync, readFile } from '@utils/file';
 
 export class ReferenceService {
   readonly collectorEquityPath = 'collector-equity';
   readonly collectorEquityDateListFileName = 'date-list';
   readonly stockListPath = 'stock-list';
   readonly stockListFileName = 'stock-list';
+  readonly exDividendPath = 'ex-dividend';
+
   getCollectorEquityList(
     request: GetCollectorEquityListInput
   ): Promise<BaseStockList<CollectorEquity[]>> {
@@ -113,5 +118,20 @@ export class ReferenceService {
     return {
       list: changeCollectorEquityList
     };
+  }
+
+  getExDividendList(request: GetExDividendInput): Promise<GetExDividendListOutput> {
+    return readFile({
+      path: `${this.exDividendPath}/${request.code}`,
+      fileName: request.code
+    }).then(data => {
+      const jsonData: { data: ExDividend[] } = JSON.parse(data);
+      const exDividendData: ExDividend[] = jsonData.data.filter(
+        item => !isNaN(parseInt(item.date, 10))
+      );
+      return {
+        list: exDividendData
+      };
+    });
   }
 }
