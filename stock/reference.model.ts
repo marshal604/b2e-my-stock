@@ -1,6 +1,8 @@
 import { BaseStockInput, Stock, BaseStockList } from './base.model';
 
-export interface GetExDividendInput extends BaseStockInput {}
+export interface GetExDividendInput {
+  code: string;
+}
 export interface ExDividend {
   date: string;
   retainedEarningsCashDividend: number;
@@ -46,4 +48,8 @@ export enum CollectorEquityLevel {
   Have600Up = 'Have600Up',
   Have800Up = 'Have800Up',
   Have1000Up = 'Have1000Up'
+}
+
+export interface GetExDividendListOutput {
+  list: ExDividend[];
 }
