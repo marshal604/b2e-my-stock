@@ -1,6 +1,7 @@
 # import * from "stock/base.graphql"
 # import * from "stock/revenue.graphql"
 # import * from "stock/reference.graphql"
+# import * from "stock/daily-info.graphql"
 
 type Query {
   sayHello(name: String): String!
@@ -14,4 +15,7 @@ type Query {
   getCollectorEquityChangeList(
     request: GetCollectorEquityChangeListInput!
   ): GetCollectorEquityChangeListOutput!
+  getCurrentStockInfo(request: StockInfoInput): StockInfo!
+  getStockInfoList(request: StockInfoInput): StockInfoList!
+  getSpecificDateStockInfo(request: StockInfoInput): StockInfo!
 }
