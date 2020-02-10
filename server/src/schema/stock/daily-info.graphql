@@ -1,0 +1,25 @@
+type StockInfoList {
+  list: [StockInfoItem]!
+}
+
+type StockInfoItem {
+  date: String!
+  data: [StockInfo]
+}
+
+type StockInfo {
+  date: String!
+  transactionVolume: Int
+  transactionPrice: Int
+  openPrice: Float
+  higherPrice: Float
+  lowerPrice: Float
+  closePrice: Float
+  priceSpreadWithHigherAndLower: Float
+  transactionCount: Int
+}
+
+input StockInfoInput {
+  code: String!
+  startTime: String!
+}

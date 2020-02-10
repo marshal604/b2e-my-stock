@@ -11,17 +11,22 @@ import {
   GetCollectorEquityListInput,
   CollectorEquity,
   GetCollectorEquityChangeListInput,
-  GetCollectorEquityChangeListOutput
+  GetCollectorEquityChangeListOutput,
+  GetStockInfoInput,
+  StockInfo,
+  StockInfoList
 } from '@models/shared/stock';
-import { RevenueService, ReferenceService } from '@service';
+import { RevenueService, ReferenceService, DailyInfoService } from '@service';
 
 interface Context {
   revenueService: RevenueService;
   referenceService: ReferenceService;
+  dailyInfoService: DailyInfoService;
 }
 export const context: Context = {
   revenueService: new RevenueService(),
-  referenceService: new ReferenceService()
+  referenceService: new ReferenceService(),
+  dailyInfoService: new DailyInfoService()
 };
 
 export const resolvers = {
@@ -68,6 +73,27 @@ export const resolvers = {
       context: Context
     ): Promise<GetCollectorEquityChangeListOutput> {
       return context.referenceService.getCollectorEquityChangeList(request);
+    },
+    getCurrentStockInfo(
+      _: any,
+      { request }: { request: GetStockInfoInput },
+      context: Context
+    ): Promise<StockInfo> {
+      return context.dailyInfoService.getCurrentStockInfo(request);
+    },
+    getStockInfoList(
+      _: any,
+      { request }: { request: GetStockInfoInput },
+      context: Context
+    ): Promise<StockInfoList> {
+      return context.dailyInfoService.getStockInfoList(request);
+    },
+    getSpecificDateStockInfo(
+      _: any,
+      { request }: { request: GetStockInfoInput },
+      context: Context
+    ): Promise<StockInfo> {
+      return context.dailyInfoService.getSpecificDateStockInfo(request);
     }
   }
 };
