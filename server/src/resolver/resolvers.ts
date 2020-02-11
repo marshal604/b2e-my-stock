@@ -14,7 +14,8 @@ import {
   GetCollectorEquityChangeListOutput,
   GetStockInfoInput,
   StockInfo,
-  StockInfoList
+  StockInfoList,
+  StockList
 } from '@models/shared/stock';
 import { RevenueService, ReferenceService, DailyInfoService } from '@service';
 
@@ -80,6 +81,9 @@ export const resolvers = {
       context: Context
     ): Promise<StockInfo> {
       return context.dailyInfoService.getCurrentStockInfo(request);
+    },
+    getStockList(_: any, __: any, context: Context): Promise<StockList> {
+      return context.dailyInfoService.getStockList();
     },
     getStockInfoList(
       _: any,

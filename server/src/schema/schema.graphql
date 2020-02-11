@@ -17,5 +17,6 @@ type Query {
   ): GetCollectorEquityChangeListOutput!
   getCurrentStockInfo(request: StockInfoInput): StockInfo!
   getStockInfoList(request: StockInfoInput): StockInfoList!
+  getStockList: StockList!
   getSpecificDateStockInfo(request: StockInfoInput): StockInfo!
 }

@@ -23,3 +23,7 @@ input StockInfoInput {
   code: String!
   startTime: String!
 }
+
+type StockList {
+  list: [Stock]!
+}
