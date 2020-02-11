@@ -1,4 +1,4 @@
-import { BaseStockInput, BaseStockItem } from './base.model';
+import { BaseStockInput, BaseStockItem, Stock } from './base.model';
 
 export interface GetStockInfoInput extends BaseStockInput {}
 export interface StockInfo {
@@ -30,4 +30,8 @@ export interface TradeInfo {
 
 export interface StockInfoList {
   list: BaseStockItem<StockInfo[]>[];
+}
+
+export interface StockList {
+  list: Stock[];
 }
