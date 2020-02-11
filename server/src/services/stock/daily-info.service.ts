@@ -1,4 +1,10 @@
-import { GetStockInfoInput, StockInfo, StockInfoList } from '@models/shared/stock';
+import {
+  GetStockInfoInput,
+  StockInfo,
+  StockInfoList,
+  Stock,
+  StockList
+} from '@models/shared/stock';
 import { DateFormatCategory, formatDate } from '@utils/date';
 import { readFile, recursiveReadFile, RecursiveReadFileOutput } from '@utils/file';
 export class DailyInfoService {
@@ -53,5 +59,15 @@ export class DailyInfoService {
     }).then((list: RecursiveReadFileOutput<StockInfo[]>[]) => ({
       list
     }));
+  }
+
+  getStockList(): Promise<StockList> {
+    return readFile({
+      path: this.stockListPath,
+      fileName: this.stockListPath
+    }).then(jsonData => {
+      const { data }: { data: Stock[] } = JSON.parse(jsonData);
+      return { list: data };
+    });
   }
 }
