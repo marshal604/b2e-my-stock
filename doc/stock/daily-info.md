@@ -164,3 +164,43 @@ query($request: StockInfoInput!) {
   }
 }
 ```
+
+## getStockList
+### Query
+```
+query {
+  getStockList {
+    list {
+      code
+      name
+    }
+  }
+}
+```
+### Request
+```
+no request
+```
+
+### Response
+```
+{
+  "data": {
+    "getStockList": {
+      "list": [
+        {
+          "code": "0050",
+          "name": "元大台灣50"
+        },
+        {
+          ...
+        },
+        {
+          "code": "9958",
+          "name": "世紀鋼"
+        }
+      ]
+    }
+  }
+}
+```
