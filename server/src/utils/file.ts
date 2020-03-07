@@ -129,3 +129,7 @@ export function recursiveReadFile<T>({
   );
   return Promise.all(filePromiseList);
 }
+
+export function readDirSync(directoryName: string): string[] {
+  return fs.readdirSync(`${rootPath}/${directoryName}`);
+}
