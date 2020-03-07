@@ -13,6 +13,9 @@ export interface StockInfo {
   transactionCount: number;
 }
 export interface GetTradeInfoInput extends BaseStockInput {}
+export interface GetTradeInfoRangeListInput {
+  startTime: string;
+}
 export interface TradeInfo {
   code: string;
   name: string;
@@ -34,4 +37,8 @@ export interface StockInfoList {
 
 export interface StockList {
   list: Stock[];
+}
+
+export interface TradeInfoList {
+  list: BaseStockItem<TradeInfo[]>[];
 }
